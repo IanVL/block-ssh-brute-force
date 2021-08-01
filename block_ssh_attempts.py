@@ -20,13 +20,24 @@ for line in file_object:
 		#Check if string_var contains an IPv4 or IPv6 address
 		if "????.????.????.????" or "????:????:????:????:????:????:????:????" in String_var:
 		ip_address = string_var
-		#Add ip_address to ip_dict if not present
+		#Add ip_address to ip_dict if not present and assing a count of 1
 		if ip_address not in ip_dict:
 			ip_dict[ip_address] = 1
 		#If present add 1 to count
 		else:
 			ip_dict[ip_address] += 1
 		
-
+#Block ip address if count is 3 or more
+for ip_address in ip_dict:
+	#Retrieve count and check if equal to or greater then 3
+	count = ip_dict[ip_address]
+        if count >= 3:
+		#Block the ip address via the function in the given module (fwblock)
+		fwblock.block_ip(ip_address)
+		#Print the bloked ip address to the terminal
+		print(ip_address + " has been blocked.")
+	#If no ip address is blocked print thius to the terminal
+	else:
+		print("No ip address has been blocked")
 		
 
