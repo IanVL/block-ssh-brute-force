@@ -1,11 +1,21 @@
 #!/usr/bin/python3
 
 #Import modules
+import argparse
 import sys
 import fwblock #Firewall blocking module
 
+#Initialize ArgumentParser()
+parser = argparse.ArgumentParser()
+
+#Add positional argument file_object
+parser.add_argument("file", help="Open file containing login attempts", type=str)
+
+#Define args
+args = parser.parse_args()
+
 #Open file containig login attempts
-file_object = open("./sshdlog", "r")
+file_object = open(args.file, "r")
 
 #Create ip dictionary
 ip_dict = {}
