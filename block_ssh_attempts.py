@@ -11,8 +11,11 @@ parser = argparse.ArgumentParser()
 #Add positional argument file
 parser.add_argument("file", help="Open file containing login attempts", type=str)
 
-#Add optional argument verbose
+#Add optional argument -v (--verbose)
 parser.add_argument("-v", "--verbose", action="store_true", help="increase output verbosity, print each ip address that will be blocked to the terminal")
+
+#add optional argument -n (--not_blocking)
+parser.add_argument("-n", "--not_blocking", action="store_true", help="Don't call block_ip(). Can be used for test purposes in combination with -v: shows which ip addresses would be blocked")
 
 #Define args
 args = parser.parse_args()
@@ -48,7 +51,8 @@ for ip_address in ip_dict:
 	count = ip_dict[ip_address]
 	if count >= 3:
 		#Block the ip address via the function in the given module (fwblock)
-		fwblock.block_ip(ip_address)
+		if not args.not_blocking:
+			fwblock.block_ip(ip_address)
 		#Print the blocked ip address to the terminal
 		if args.verbose:
 			print("Blocking " + ip_address)
