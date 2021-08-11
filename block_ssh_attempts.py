@@ -8,8 +8,11 @@ import fwblock #Firewall blocking module
 #Initialize ArgumentParser()
 parser = argparse.ArgumentParser()
 
-#Add positional argument file_object
+#Add positional argument file
 parser.add_argument("file", help="Open file containing login attempts", type=str)
+
+#Add optional argument verbose
+parser.add_argument("-v", "--verbose", action="store_true", help="increase output verbosity, print each ip address that will be blocked to the terminal")
 
 #Define args
 args = parser.parse_args()
@@ -30,7 +33,7 @@ for line in file_object:
 			#Save string in front of "port" (should be ip-address) in string_var
 			string_var = split_line[split_line.index("port") - 1]
 			#Check if string_var contains an IPv4 or IPv6 address
-			if "????.????.????.????" or "????:????:????:????:????:????:????:????" in string_var:
+			if "???.???.???.???" or "????:????:????:????:????:????:????:????" in string_var:
 				ip_address = string_var
 			#Add ip_address to ip_dict if not present and add a count of 1
 			if ip_address not in ip_dict:
@@ -47,9 +50,5 @@ for ip_address in ip_dict:
 		#Block the ip address via the function in the given module (fwblock)
 		fwblock.block_ip(ip_address)
 		#Print the blocked ip address to the terminal
-		print(ip_address + " has been blocked.")
-	#If no ip address is blocked print this to the terminal
-	else:
-		print("No ip address has been blocked")
-		
-
+		if args.verbose:
+			print("Blocking " + ip_address)
