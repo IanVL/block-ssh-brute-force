@@ -5,17 +5,33 @@ import argparse
 import sys
 import fwblock #Firewall blocking module
 
+#Define the description (dsc)
+def dsc(name=None):
+	return "Description:\nBlock attackers ip address upon 3 or more failed login attempts."
+
+#Define file help message (file_msg)
+def file_msg(name=None):
+	return "Open logfile containing login attempts"
+
+#Define verbose help message (verbose_msg)
+def verbose_msg(name=None):
+	return "Increase output verbosity, print each ip address that will be blocked to the terminal"
+
+#Define not_blocking help message (nb_msg)
+def nb_msg(name=None):
+	return "Don't call block_ip(). Can be used for test purposes in combination with -v: shows which ip addresses would be blocked if -n was not parsed"
+
 #Initialize ArgumentParser()
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(description=dsc())
 
 #Add positional argument file
-parser.add_argument("file", help="Open file containing login attempts", type=str)
+parser.add_argument("file", help=file_msg(), type=str)
 
 #Add optional argument -v (--verbose)
-parser.add_argument("-v", "--verbose", action="store_true", help="increase output verbosity, print each ip address that will be blocked to the terminal")
+parser.add_argument("-v", "--verbose", action="store_true", help=verbose_msg())
 
 #add optional argument -n (--not_blocking)
-parser.add_argument("-n", "--not_blocking", action="store_true", help="Don't call block_ip(). Can be used for test purposes in combination with -v: shows which ip addresses would be blocked")
+parser.add_argument("-n", "--not_blocking", action="store_true", help=nb_msg())
 
 #Define args
 args = parser.parse_args()
